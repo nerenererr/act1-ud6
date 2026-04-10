@@ -2,10 +2,9 @@ package dao;
 
 import modelos.Cliente;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClienteDAO {
     private String url = "jdbc:sqlite:activity1.sqlite3";
@@ -55,6 +54,41 @@ public class ClienteDAO {
     } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
+    }
+
+    public void obtenerCliente(int id) {
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "SELECT * FROM clientes WHERE id = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public List<Cliente> obtenerClientes() {
+        List<Cliente> listaClientes = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "SELECT * FROM clientes";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String email = rs.getString("email");
+                String telefono = rs.getString("telefono");
+                int edad = rs.getInt("edad");
+                double dinero_gastado = rs.getDouble("dinero_gastado");
+                int productos_comprados = rs.getInt("productos_comprados");
+                Cliente c = new Cliente(nombre, email, telefono, edad, dinero_gastado, productos_comprados);
+                listaClientes.add(c);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return listaClientes;
     }
 
 }
