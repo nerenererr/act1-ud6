@@ -56,16 +56,26 @@ public class ClienteDAO {
         }
     }
 
-    public void obtenerCliente(int id) {
+    public Cliente obtenerClientePorId(int id) {
+        Cliente cliente = null;
         try (Connection conn = DriverManager.getConnection(url)) {
             String sql = "SELECT * FROM clientes WHERE id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, id);
             ResultSet rs = pstmt.executeQuery();
-
+            if(rs.next()) {
+                String nombre = rs.getString("nombre");
+                String email = rs.getString("email");
+                String telefono = rs.getString("telefono");
+                int edad = rs.getInt("edad");
+                double dinero_gastado = rs.getDouble("dinero_gastado");
+                int productos_comprados = rs.getInt("productos_comprados");
+                cliente = new Cliente(nombre, email, telefono, edad, dinero_gastado, productos_comprados);
+            }
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
+        return cliente;
     }
 
     public List<Cliente> obtenerClientes() {
@@ -89,6 +99,98 @@ public class ClienteDAO {
             System.out.println("Error: " + e.getMessage());
         }
         return listaClientes;
+    }
+
+    public List<Cliente> obtenerClientesMas30() {
+        List<Cliente> listaClientesMas30 = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "SELECT * FROM clientes WHERE edad > 30";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String email = rs.getString("email");
+                String telefono = rs.getString("telefono");
+                int edad = rs.getInt("edad");
+                double dinero_gastado = rs.getDouble("dinero_gastado");
+                int productos_comprados = rs.getInt("productos_comprados");
+                Cliente c = new Cliente(nombre, email, telefono, edad, dinero_gastado, productos_comprados);
+                listaClientesMas30.add(c);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return listaClientesMas30;
+    }
+
+    public List<Cliente> obtenerClientesGasto500() {
+        List<Cliente> listaClientesGasto500 = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "SELECT * FROM clientes WHERE dinero_gastado > 500";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String email = rs.getString("email");
+                String telefono = rs.getString("telefono");
+                int edad = rs.getInt("edad");
+                double dinero_gastado = rs.getDouble("dinero_gastado");
+                int productos_comprados = rs.getInt("productos_comprados");
+                Cliente c = new Cliente(nombre, email, telefono, edad, dinero_gastado, productos_comprados);
+                listaClientesGasto500.add(c);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return listaClientesGasto500;
+    }
+
+    public List<Cliente> obtenerClientesOrdenGasto() {
+        List<Cliente> listaClientesOrdenGasto = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "SELECT * FROM clientes ORDER BY dinero_gastado DESC";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String email = rs.getString("email");
+                String telefono = rs.getString("telefono");
+                int edad = rs.getInt("edad");
+                double dinero_gastado = rs.getDouble("dinero_gastado");
+                int productos_comprados = rs.getInt("productos_comprados");
+                Cliente c = new Cliente(nombre, email, telefono, edad, dinero_gastado, productos_comprados);
+                listaClientesOrdenGasto.add(c);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return listaClientesOrdenGasto;
+    }
+
+    public List<Cliente> obtenerClientesMasCompra() {
+        List<Cliente> listaClientesMasCompra = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(url)) {
+            String sql = "SELECT * FROM clientes ORDER BY productos_comprados DESC LIMIT 3";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String email = rs.getString("email");
+                String telefono = rs.getString("telefono");
+                int edad = rs.getInt("edad");
+                double dinero_gastado = rs.getDouble("dinero_gastado");
+                int productos_comprados = rs.getInt("productos_comprados");
+                Cliente c = new Cliente(nombre, email, telefono, edad, dinero_gastado, productos_comprados);
+                listaClientesMasCompra.add(c);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return listaClientesMasCompra;
     }
 
 }
