@@ -9,7 +9,7 @@ import java.util.List;
 public class ClienteDAO {
     private String url = "jdbc:sqlite:activity1.sqlite3";
 
-    public void insertarCliente(Cliente c) {
+    public int insertarCliente(Cliente c) {
         try (Connection conn = DriverManager.getConnection(url)) {
             String sql ="INSERT INTO clientes (nombre, email, telefono, edad, dinero_gastado, productos_comprados) " +
                     "VALUES (?, ?, ?, ?, ?, ?)";
@@ -21,10 +21,15 @@ public class ClienteDAO {
             pstmt.setDouble(5, c.getDinero_gastado());
             pstmt.setInt(6, c.getProductos_comprados());
             pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
 
         } catch (SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }
+        return -1;
     }
 
     public void actualizarCliente(Cliente c, int id) {
