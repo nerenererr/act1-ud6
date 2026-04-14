@@ -70,13 +70,12 @@ public class Cliente {
 
     @Override
     public String toString() {
-        return "Cliente{" +
-                "nombre='" + nombre + '\'' +
-                ", email='" + email + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", edad=" + edad +
-                ", dinero_gastado=" + dinero_gastado +
-                ", productos_comprados=" + productos_comprados +
-                '}';
+        return "CLIENTE .✦ ݁˖" +
+                "\n  Nombre:     " + nombre +
+                "\n  Edad:       " + edad +
+                "\n  Email:      " + email +
+                "\n  Teléfono:   " + telefono +
+                "\n  Productos:    " + productos_comprados + " unidades" +
+                "\n  Gasto:  " + dinero_gastado + "€ \n";
     }
 }
